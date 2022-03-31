@@ -38,14 +38,15 @@ export default defineComponent({
       require: true
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'scrollIndex'],
   setup(prop, { emit }) {
     const handleSidebarItemChange = (value: any) => {
-      console.log(value)
       handleSidebarChange(value)
     }
+    //点击左侧，需要滑动位置
     const handleSidebarChange = (value: any) => {
       emit('update:modelValue', value)
+      emit('scrollIndex', value)
     }
     return { handleSidebarItemChange, handleSidebarChange }
   }

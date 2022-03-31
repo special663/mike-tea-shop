@@ -4,6 +4,7 @@ import { IRootState, IRootWithModule } from './types'
 import login from './entrance/login/login'
 import register from './entrance/register/register'
 import goods from './main/goods/goods'
+import home from './main/home/home'
 
 const store = createStore<IRootState>({
   state() {
@@ -17,7 +18,8 @@ const store = createStore<IRootState>({
     login,
     register,
     //main
-    goods
+    goods,
+    home
   }
 })
 

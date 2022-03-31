@@ -31,7 +31,6 @@ const goods: Module<IGoodsState, IRootState> = {
     },
     changeGoodsY(state, value: number) {
       state.goodsY = value
-      Store.setStorage('goodsY', value)
     }
   },
   actions: {
@@ -40,8 +39,8 @@ const goods: Module<IGoodsState, IRootState> = {
         const { url } = payload
         let cache = ''
         if (payload.query) cache = payload.query + url
+        if (payload.goodsId) cache = payload.goodsId + url
         else cache = url
-
         const { data, code } = await goodsService(cache)
 
         if (data.length || Object.keys(data).length) {
@@ -64,7 +63,7 @@ const goods: Module<IGoodsState, IRootState> = {
       }
     },
     async loadLocalGoodsList({ commit, dispatch }) {
-      const storeName = ['List', 'Swipe', 'Y']
+      const storeName = ['List', 'Swipe']
       for (const item of storeName) {
         const store = Store.getStorage(`goods${item}`)
         if (store) {

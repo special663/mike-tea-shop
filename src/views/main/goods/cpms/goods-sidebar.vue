@@ -1,6 +1,10 @@
 <template>
   <div class="goods-sidebar">
-    <SXSidebar :sidebarItemConfig="sidebarItemConfig" v-model="activeSidebar" />
+    <SXSidebar
+      :sidebarItemConfig="sidebarItemConfig"
+      @scrollIndex="scrollIndex"
+      v-model="activeSidebar"
+    />
   </div>
 </template>
 
@@ -16,7 +20,7 @@ export default defineComponent({
       default: 1
     }
   },
-  setup(prop) {
+  setup(prop, { emit }) {
     const activeSidebar = ref(0)
     watch(
       () => prop.activeNumber,
@@ -24,7 +28,10 @@ export default defineComponent({
         activeSidebar.value = newValue
       }
     )
-    return { sidebarItemConfig, activeSidebar }
+    const scrollIndex = (value: any) => {
+      emit('scrollIndex', value)
+    }
+    return { sidebarItemConfig, activeSidebar, scrollIndex }
   }
 })
 </script>

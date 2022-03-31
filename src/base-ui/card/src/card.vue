@@ -28,10 +28,9 @@ export default defineComponent({
       type: Object as PropType<ICardConfig>
     }
   },
-  emits: ['handleCard'],
-  setup() {
+  setup(prop, { emit }) {
     const handleCard = (value: ICardConfig) => {
-      console.log(value)
+      emit('handleCard', value)
     }
     return { handleCard }
   }

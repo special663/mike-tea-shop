@@ -1,8 +1,11 @@
 <template>
   <div class="popup">
     <van-popup
+      @open="closePopup(false)"
+      @close="closePopup(true)"
       v-model:show="isShow"
       :position="popupConfig.position"
+      :round="popupConfig.round"
       :style="popupConfig.style"
       class="popup"
     >
@@ -26,9 +29,13 @@ export default defineComponent({
       require: true
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'closePopup'],
   setup(props, { emit }) {
     const isShow = ref(props.modelValue)
+    const closePopup = (value: boolean) => {
+      //为true时，就说明关闭弹出层
+      emit('closePopup', value)
+    }
     watch(
       () => props.modelValue,
       (newValue) => {
@@ -39,7 +46,7 @@ export default defineComponent({
     watch(isShow, (newValue) => {
       emit('update:modelValue', newValue)
     })
-    return { isShow }
+    return { isShow, closePopup }
   }
 })
 </script>

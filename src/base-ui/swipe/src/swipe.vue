@@ -4,9 +4,12 @@
       <van-swipe-item
         v-for="item in swipeItemConfig"
         :style="swipeItemStyle"
-        :key="item.swipeList.name"
+        :key="item?.swipeList?.name ?? item"
       >
-        <img class="swipe-img" :src="`${item.swipeList.image}?type=middle`" />
+        <img
+          class="swipe-img"
+          :src="`${item?.swipeList?.image ?? item}?type=middle`"
+        />
       </van-swipe-item>
     </van-swipe>
   </div>

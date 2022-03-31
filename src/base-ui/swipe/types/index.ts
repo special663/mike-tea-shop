@@ -1,5 +1,5 @@
 export interface ISwipeConfig {
-  autoplay: number | string
+  autoplay?: number | string
   'indicator-color'?: string
   style?: string
 }

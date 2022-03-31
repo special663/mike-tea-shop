@@ -6,9 +6,14 @@
       <img src="~@/assets/img/png/user_info_perfect.png" />
       <div class="main-content">
         <van-sticky offset-top="46" z-index="1">
-          <GoodsSidebar class="goods-sidebar" :activeNumber="activeNumber" />
+          <GoodsSidebar
+            class="goods-sidebar"
+            @scrollIndex="scrollIndex"
+            :activeNumber="activeNumber"
+          />
         </van-sticky>
         <GoodsList
+          ref="listRef"
           class="goods-list"
           @handleStickyChange="handleStickyChange"
         />
@@ -18,20 +23,33 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, nextTick } from 'vue'
 import GoodsNavBar from './goods-nav-bar.vue'
 import GoodsSidebar from './goods-sidebar.vue'
 import GoodsList from './goods-list.vue'
-
+import scrollY from '@/hooks/hooks-scrollY'
 export default defineComponent({
   components: { GoodsNavBar, GoodsSidebar, GoodsList },
   setup() {
+    const listRef = ref<InstanceType<typeof GoodsList>>()
     const activeNumber = ref(0)
     const handleStickyChange = (value: any) => {
       if (value < 0) value = 0
       activeNumber.value = value
     }
-    return { activeNumber, handleStickyChange }
+    scrollY('.goods-content', {
+      gettersPath: 'goods/getGoodsInfo',
+      commitPath: 'goods/changeGoodsY'
+    })
+    const scrollIndex = (value: any) => {
+      const node: any = document.querySelector('.goods-content')
+      nextTick(() => {
+        const fatherNode = listRef.value?.$el
+        const activeNode = fatherNode.querySelector(`.sticky${value}`)
+        node.scrollTop = activeNode.offsetTop - 44
+      })
+    }
+    return { listRef, activeNumber, handleStickyChange, scrollIndex }
   }
 })
 </script>

@@ -4,6 +4,7 @@ export interface IPopupConfig {
   position: positionEnum
   overlay?: boolean
   style: IPopupStyle
+  round?: boolean
 }
 
 export interface IPopupStyle {

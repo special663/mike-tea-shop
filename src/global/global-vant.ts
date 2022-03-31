@@ -7,6 +7,7 @@ import {
   CellGroup,
   Col,
   Dialog,
+  Empty,
   Field,
   Form,
   Icon,
@@ -20,6 +21,7 @@ import {
   Sidebar,
   SidebarItem,
   Step,
+  Stepper,
   Steps,
   Sticky,
   SubmitBar,
@@ -67,7 +69,9 @@ const vants = [
   ActionBar,
   ActionBarIcon,
   ActionBarButton,
-  Card
+  Card,
+  Empty,
+  Stepper
 ]
 
 export default function registerVantsElement(app: App): void {

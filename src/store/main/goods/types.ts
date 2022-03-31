@@ -8,4 +8,5 @@ export interface IGoodsState {
 export interface IGoodsListPayload {
   url: string
   query?: string
+  goodsId?: string
 }

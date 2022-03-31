@@ -7,7 +7,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import GoodsContent from './cpms/goods-content.vue'
-
 export default defineComponent({
   components: { GoodsContent },
   setup() {

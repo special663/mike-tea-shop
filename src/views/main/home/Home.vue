@@ -1,5 +1,5 @@
 <template>
-  <div class="goods">
+  <div class="home">
     <van-pull-refresh
       ref="root"
       class="pull-refresh"
@@ -12,37 +12,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, nextTick } from 'vue'
-import { useStore } from '@/store'
+import { defineComponent, ref } from 'vue'
 import HomeContent from './cpms/home-content.vue'
+import scrollY from '@/hooks/hooks-scrollY'
 
 export default defineComponent({
   components: { HomeContent },
   setup() {
-    const Store = useStore()
     const loading = ref(false)
     const onRefresh = () => {
       setTimeout(() => {
         loading.value = false
       }, 2000)
     }
-    let timer: any = null
-    const savePosY = () => {
-      if (timer) return
-      timer = setTimeout(() => {
-        let node: any = document.querySelector('.goods')
-        //记录滚动位置
-        Store.commit('goods/changeGoodsY', node.scrollTop)
-        timer = null
-        clearTimeout(timer)
-      }, 100)
-    }
-    onMounted(() => {
-      let contentWrapper: any = document.querySelector('.goods')
-      contentWrapper.addEventListener('scroll', savePosY)
-      nextTick(() => {
-        contentWrapper.scrollTop = Store.getters['goods/getGoodsInfo']('Y')
-      })
+    //监听滚动位置
+    scrollY('.home', {
+      gettersPath: 'home/getHomeInfo',
+      commitPath: 'home/changeHomeY'
     })
     return { loading, onRefresh }
   }
@@ -50,7 +36,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
-.goods {
+.home {
   width: 100%;
   height: calc(100vh - 50px);
   overflow-y: scroll;
