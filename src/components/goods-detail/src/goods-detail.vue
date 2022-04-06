@@ -29,6 +29,7 @@
       <GoodsTaste @showGoodsInfo="showGoodsInfo" :GoodsTasteInfo="goodsTaste" />
     </div>
     <div class="detail-footer">
+      <!-- 显示价格,控制分量 -->
       <div class="control-box">
         <div class="price-box">
           ￥<span class="price-messsage">{{
@@ -39,7 +40,9 @@
           <van-stepper class="stepper" disable-input v-model="count" />
         </div>
       </div>
+      <!-- 显示类型参数 -->
       <div class="goods-info">{{ goodsInfo }}</div>
+      <!-- 加入购物车 -->
       <div class="add-shop-bag">
         <van-button color="rgba(29,136,92)" size="large" round
           ><span class="merge">加入购物袋</span></van-button
@@ -50,7 +53,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { formatParam, formatMaterical } from '../hooks'
+import { computed, defineComponent, inject, ref, watch } from 'vue'
 
 import SXSwipe from '@/base-ui/swipe'
 import GoodsTaste from '@/components/goods-taste'
@@ -67,26 +71,32 @@ export default defineComponent({
     }
   },
   setup(prop) {
-    const goodsTaste = computed(() => ({
-      material: prop.goodsDetail?.material,
-      sugar: prop.goodsDetail?.sugar,
-      temp: prop.goodsDetail?.temp
-    }))
+    const isClosePopup = inject('isClosePopup')
+    const goodsTaste = computed(() => {
+      const cache: any = {}
+      //主要对material数据进行筛选
+      if (prop.goodsDetail?.material?.length > 1)
+        cache.material = formatMaterical(prop.goodsDetail?.material)
+      cache.sugar = prop.goodsDetail?.sugar
+      cache.temp = prop.goodsDetail?.temp
+      return cache
+    })
     const count = ref(1)
     const goodsInfo: any = ref('')
     const showGoodsInfo = (value: any) => {
-      const { material, sugar, temp } = value
-      const _sugar = sugar.target ?? ''
-      const _temp = temp.target ?? ''
-      let _material = ''
-      material.forEach((item: any) => {
-        _material += `${item.target}/`
-      })
-      goodsInfo.value = `${_sugar}/${_temp}`
-      if (material.length > 0) {
-        goodsInfo.value = `[${_material}]` + goodsInfo.value
-      }
+      //格式化商品参数
+      goodsInfo.value = formatParam(value)
     }
+    //监听窗口关闭，初始化商品参数列表
+    watch(
+      () => isClosePopup,
+      (newValue) => {
+        if (newValue) showGoodsInfo({ material: [], sugar: {}, temp: {} })
+      },
+      {
+        deep: true
+      }
+    )
 
     return { goodsTaste, count, goodsInfo, showGoodsInfo }
   }
@@ -153,23 +163,23 @@ export default defineComponent({
     box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
     font-size: 15px;
     .control-box {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      margin: 15px 13px 0px;
+      margin: 20px 13px 0px;
       .price-box {
         font-size: 1.3em;
         font-weight: 600;
       }
     }
     .goods-info {
-      margin-left: 13px;
+      margin-left: 0.8em;
     }
     .add-shop-bag {
-      margin: 0 13px;
+      margin: 1em 0.8em;
       .merge {
         font-size: 1.2em;
         letter-spacing: 0.1em;

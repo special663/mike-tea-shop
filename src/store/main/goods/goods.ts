@@ -3,6 +3,7 @@ import { Module } from 'vuex'
 import { IGoodsListPayload, IGoodsState } from './types'
 import { goodsService } from '@/service/main/goods/goods'
 import { Toast } from 'vant'
+import filterMaterialPrice from './hooks/filter-material-price'
 import Store from '@/utils/cache'
 
 const goods: Module<IGoodsState, IRootState> = {
@@ -12,7 +13,8 @@ const goods: Module<IGoodsState, IRootState> = {
       goodsList: [],
       goodsSwipe: [],
       goodsDetail: null,
-      goodsY: 0 //记录滑动的位置
+      goodsY: 0, //记录滑动的位置
+      goodsMaterial: null
     }
   },
   getters: {
@@ -31,6 +33,9 @@ const goods: Module<IGoodsState, IRootState> = {
     },
     changeGoodsY(state, value: number) {
       state.goodsY = value
+    },
+    changeGoodsMaterial(state, payload: any) {
+      state.goodsMaterial = filterMaterialPrice(payload)
     }
   },
   actions: {
@@ -62,6 +67,7 @@ const goods: Module<IGoodsState, IRootState> = {
         return false
       }
     },
+    //当页面刷新时，去本地缓存中获取对应的数据
     async loadLocalGoodsList({ commit, dispatch }) {
       const storeName = ['List', 'Swipe']
       for (const item of storeName) {

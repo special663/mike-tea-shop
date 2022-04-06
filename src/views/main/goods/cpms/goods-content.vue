@@ -24,6 +24,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, nextTick } from 'vue'
+import { useStore } from '@/store'
 import GoodsNavBar from './goods-nav-bar.vue'
 import GoodsSidebar from './goods-sidebar.vue'
 import GoodsList from './goods-list.vue'
@@ -31,6 +32,7 @@ import scrollY from '@/hooks/hooks-scrollY'
 export default defineComponent({
   components: { GoodsNavBar, GoodsSidebar, GoodsList },
   setup() {
+    const store = useStore()
     const listRef = ref<InstanceType<typeof GoodsList>>()
     const activeNumber = ref(0)
     const handleStickyChange = (value: any) => {
@@ -49,6 +51,10 @@ export default defineComponent({
         node.scrollTop = activeNode.offsetTop - 44
       })
     }
+    //发送网络请求 请求小料参数
+    store.dispatch('goods/getGoodsList', {
+      url: '/material'
+    })
     return { listRef, activeNumber, handleStickyChange, scrollIndex }
   }
 })
@@ -72,7 +78,8 @@ export default defineComponent({
       justify-content: space-between;
       .goods-list {
         width: calc(100% - 84.6px);
-        margin-bottom: 14px;
+        // 撑开一个盒子的高度
+        margin-bottom: 118px !important;
       }
     }
   }

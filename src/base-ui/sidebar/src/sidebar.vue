@@ -17,6 +17,9 @@
           </div>
         </template>
       </van-sidebar-item>
+      <!-- 这段代码可以优化 -->
+      <van-sidebar-item />
+      <van-sidebar-item />
       <van-sidebar-item />
     </van-sidebar>
   </div>
