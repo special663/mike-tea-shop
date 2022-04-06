@@ -32,9 +32,7 @@
       <!-- 显示价格,控制分量 -->
       <div class="control-box">
         <div class="price-box">
-          ￥<span class="price-messsage">{{
-            goodsDetail?.oldPrice * count
-          }}</span>
+          ￥<span class="price-messsage">{{ goodsPrice }}</span>
         </div>
         <div class="count-control">
           <van-stepper class="stepper" disable-input v-model="count" />
@@ -44,7 +42,11 @@
       <div class="goods-info">{{ goodsInfo }}</div>
       <!-- 加入购物车 -->
       <div class="add-shop-bag">
-        <van-button color="rgba(29,136,92)" size="large" round
+        <van-button
+          :disabled="setColor === DEFAULT_COLOR ? true : false"
+          :color="setColor"
+          size="large"
+          round
           ><span class="merge">加入购物袋</span></van-button
         >
       </div>
@@ -53,8 +55,16 @@
 </template>
 
 <script lang="ts">
-import { formatParam, formatMaterical } from '../hooks'
-import { computed, defineComponent, inject, ref, watch } from 'vue'
+import { computed, defineComponent, inject, Ref, ref, watch } from 'vue'
+import { useStore } from '@/store'
+import {
+  formatParam,
+  formatMaterical,
+  computeMaterialPrice,
+  verdictColor
+} from '../hooks'
+
+import { DEFAULT_COLOR } from '@/constants/global-types'
 
 import SXSwipe from '@/base-ui/swipe'
 import GoodsTaste from '@/components/goods-taste'
@@ -71,6 +81,7 @@ export default defineComponent({
     }
   },
   setup(prop) {
+    const store = useStore()
     const isClosePopup = inject('isClosePopup')
     const goodsTaste = computed(() => {
       const cache: any = {}
@@ -82,10 +93,18 @@ export default defineComponent({
       return cache
     })
     const count = ref(1)
-    const goodsInfo: any = ref('')
+    const goodsInfo: Ref<any> = ref('')
+    const materialList: Ref<number> = ref(0)
+    const setColor = ref(DEFAULT_COLOR)
+    //计算商品价格
+    const goodsPrice = computed(() => {
+      return (prop.goodsDetail?.oldPrice + materialList.value) * count.value
+    })
     const showGoodsInfo = (value: any) => {
       //格式化商品参数
+      materialList.value = computeMaterialPrice(store, value)
       goodsInfo.value = formatParam(value)
+      setColor.value = verdictColor(value)
     }
     //监听窗口关闭，初始化商品参数列表
     watch(
@@ -98,7 +117,15 @@ export default defineComponent({
       }
     )
 
-    return { goodsTaste, count, goodsInfo, showGoodsInfo }
+    return {
+      DEFAULT_COLOR,
+      setColor,
+      goodsTaste,
+      count,
+      goodsInfo,
+      goodsPrice,
+      showGoodsInfo
+    }
   }
 })
 </script>
