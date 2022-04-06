@@ -98,6 +98,7 @@ export default defineComponent({
 <style scoped lang="less">
 .goods-list {
   width: 100%;
+  // padding-bottom: 50px;
   .top-stciky {
     background-color: white;
     height: 35px;
