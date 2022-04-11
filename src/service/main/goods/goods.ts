@@ -7,3 +7,17 @@ export function goodsService(url: string, account?: any) {
     params: account
   })
 }
+
+export function postGoodsService(url: string, payload?: any) {
+  return SXRequest.post<IDataType<any>>({
+    url: `/goods${url}`,
+    data: payload
+  })
+}
+
+export function patchGoodsService(url: string, payload?: any) {
+  return SXRequest.patch<IDataType<any>>({
+    url: `/goods${url}`,
+    data: payload
+  })
+}

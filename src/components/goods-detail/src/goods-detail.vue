@@ -9,7 +9,7 @@
     </div>
     <!-- 展示商品数据 -->
     <div class="detail-content">
-      <van-sticky :offset-top="130">
+      <van-sticky :offset-top="80">
         <div class="content-message">
           <div class="goods-name">{{ goodsDetail?.name }}</div>
           <div class="goods-star">
@@ -47,6 +47,7 @@
           :color="setColor"
           size="large"
           round
+          @click="addShopBag"
           ><span class="merge">加入购物袋</span></van-button
         >
       </div>
@@ -61,13 +62,16 @@ import {
   formatParam,
   formatMaterical,
   computeMaterialPrice,
-  verdictColor
+  verdictColor,
+  formatData
 } from '../hooks'
 
 import { DEFAULT_COLOR } from '@/constants/global-types'
 
 import SXSwipe from '@/base-ui/swipe'
 import GoodsTaste from '@/components/goods-taste'
+import { useRouter } from 'vue-router'
+import { Toast } from 'vant'
 export default defineComponent({
   components: { SXSwipe, GoodsTaste },
   props: {
@@ -82,7 +86,10 @@ export default defineComponent({
   },
   setup(prop) {
     const store = useStore()
+    const Router = useRouter()
+    //判断是否关闭Popup窗口
     const isClosePopup = inject('isClosePopup')
+    const unMountedShowGoodsDetail: any = inject('unMountedShowGoodsDetail')
     const goodsTaste = computed(() => {
       const cache: any = {}
       //主要对material数据进行筛选
@@ -92,9 +99,13 @@ export default defineComponent({
       cache.temp = prop.goodsDetail?.temp
       return cache
     })
+    //计算数量
     const count = ref(1)
+    //获取[小料]甜份/温度信息
     const goodsInfo: Ref<any> = ref('')
+    //小料总价格
     const materialList: Ref<number> = ref(0)
+    //按钮颜色
     const setColor = ref(DEFAULT_COLOR)
     //计算商品价格
     const goodsPrice = computed(() => {
@@ -110,12 +121,33 @@ export default defineComponent({
     watch(
       () => isClosePopup,
       (newValue) => {
-        if (newValue) showGoodsInfo({ material: [], sugar: {}, temp: {} })
+        if (newValue) {
+          showGoodsInfo({ material: [], sugar: {}, temp: {} })
+          count.value = 1
+        }
       },
       {
         deep: true
       }
     )
+    //添加商品到购物袋中
+    const addShopBag = async () => {
+      const data = formatData(
+        {
+          goodsParams: prop.goodsDetail,
+          goodsPrice: goodsPrice.value,
+          goodsTaste: goodsInfo.value,
+          goodsCount: count.value
+        },
+        Router
+      )
+      const result = await store.dispatch('goods/postGoodsInfo', {
+        url: '/shopBag',
+        data
+      })
+      if (result) unMountedShowGoodsDetail()
+      else Toast('网络异常!')
+    }
 
     return {
       DEFAULT_COLOR,
@@ -124,7 +156,8 @@ export default defineComponent({
       count,
       goodsInfo,
       goodsPrice,
-      showGoodsInfo
+      showGoodsInfo,
+      addShopBag
     }
   }
 })
@@ -140,6 +173,7 @@ export default defineComponent({
     overflow: hidden;
   }
   .detail-content {
+    z-index: 999999;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -181,7 +215,7 @@ export default defineComponent({
     margin-bottom: 170px;
   }
   .detail-footer {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;

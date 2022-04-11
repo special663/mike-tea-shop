@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, provide, readonly, ref } from 'vue'
+import { computed, defineComponent, provide, readonly, ref, watch } from 'vue'
 import Storage from '@/utils/cache'
 import { useStore } from '@/store'
 
@@ -51,7 +51,7 @@ import SXEmpty from '@/base-ui/empty'
 import GoodsDetail from '@/components/goods-detail'
 export default defineComponent({
   components: { SXCard, SXSwipe, SXPopup, SXEmpty, GoodsDetail },
-  emits: ['handleStickyChange'],
+  emits: ['handleStickyChange', 'changeGoodsDetailInvoke'],
   setup(prop, { emit }) {
     const store = useStore()
     //是否关闭弹出层进行判断
@@ -66,6 +66,9 @@ export default defineComponent({
     )
     const isNotShowErrorPage = ref(true) //默认不打开无效界面
     const isShowGoodsDetail = ref(false)
+    provide('unMountedShowGoodsDetail', () => {
+      isShowGoodsDetail.value = false
+    })
     const handleCard = async (value: any) => {
       isShowGoodsDetail.value = true
       isNotShowErrorPage.value = await store.dispatch('goods/getGoodsList', {
@@ -76,6 +79,13 @@ export default defineComponent({
     const handleStickyChange = ($event: any, goodsId: any) => {
       emit('handleStickyChange', $event ? goodsId : goodsId - 1)
     }
+    watch(
+      () => isShowGoodsDetail.value,
+      (newValue) => {
+        console.log(newValue)
+        emit('changeGoodsDetailInvoke', newValue)
+      }
+    )
     return {
       swipeConfig,
       swipeItemConfig,
