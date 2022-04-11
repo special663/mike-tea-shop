@@ -9,7 +9,7 @@
     </div>
     <!-- 展示商品数据 -->
     <div class="detail-content">
-      <van-sticky :offset-top="130">
+      <van-sticky :offset-top="80">
         <div class="content-message">
           <div class="goods-name">{{ goodsDetail?.name }}</div>
           <div class="goods-star">
@@ -32,9 +32,7 @@
       <!-- 显示价格,控制分量 -->
       <div class="control-box">
         <div class="price-box">
-          ￥<span class="price-messsage">{{
-            goodsDetail?.oldPrice * count
-          }}</span>
+          ￥<span class="price-messsage">{{ goodsPrice }}</span>
         </div>
         <div class="count-control">
           <van-stepper class="stepper" disable-input v-model="count" />
@@ -44,7 +42,12 @@
       <div class="goods-info">{{ goodsInfo }}</div>
       <!-- 加入购物车 -->
       <div class="add-shop-bag">
-        <van-button color="rgba(29,136,92)" size="large" round
+        <van-button
+          :disabled="setColor === DEFAULT_COLOR ? true : false"
+          :color="setColor"
+          size="large"
+          round
+          @click="addShopBag"
           ><span class="merge">加入购物袋</span></van-button
         >
       </div>
@@ -53,11 +56,22 @@
 </template>
 
 <script lang="ts">
-import { formatParam, formatMaterical } from '../hooks'
-import { computed, defineComponent, inject, ref, watch } from 'vue'
+import { computed, defineComponent, inject, Ref, ref, watch } from 'vue'
+import { useStore } from '@/store'
+import {
+  formatParam,
+  formatMaterical,
+  computeMaterialPrice,
+  verdictColor,
+  formatData
+} from '../hooks'
+
+import { DEFAULT_COLOR } from '@/constants/global-types'
 
 import SXSwipe from '@/base-ui/swipe'
 import GoodsTaste from '@/components/goods-taste'
+import { useRouter } from 'vue-router'
+import { Toast } from 'vant'
 export default defineComponent({
   components: { SXSwipe, GoodsTaste },
   props: {
@@ -71,7 +85,11 @@ export default defineComponent({
     }
   },
   setup(prop) {
+    const store = useStore()
+    const Router = useRouter()
+    //判断是否关闭Popup窗口
     const isClosePopup = inject('isClosePopup')
+    const unMountedShowGoodsDetail: any = inject('unMountedShowGoodsDetail')
     const goodsTaste = computed(() => {
       const cache: any = {}
       //主要对material数据进行筛选
@@ -81,24 +99,66 @@ export default defineComponent({
       cache.temp = prop.goodsDetail?.temp
       return cache
     })
+    //计算数量
     const count = ref(1)
-    const goodsInfo: any = ref('')
+    //获取[小料]甜份/温度信息
+    const goodsInfo: Ref<any> = ref('')
+    //小料总价格
+    const materialList: Ref<number> = ref(0)
+    //按钮颜色
+    const setColor = ref(DEFAULT_COLOR)
+    //计算商品价格
+    const goodsPrice = computed(() => {
+      return (prop.goodsDetail?.oldPrice + materialList.value) * count.value
+    })
     const showGoodsInfo = (value: any) => {
       //格式化商品参数
+      materialList.value = computeMaterialPrice(store, value)
       goodsInfo.value = formatParam(value)
+      setColor.value = verdictColor(value)
     }
     //监听窗口关闭，初始化商品参数列表
     watch(
       () => isClosePopup,
       (newValue) => {
-        if (newValue) showGoodsInfo({ material: [], sugar: {}, temp: {} })
+        if (newValue) {
+          showGoodsInfo({ material: [], sugar: {}, temp: {} })
+          count.value = 1
+        }
       },
       {
         deep: true
       }
     )
+    //添加商品到购物袋中
+    const addShopBag = async () => {
+      const data = formatData(
+        {
+          goodsParams: prop.goodsDetail,
+          goodsPrice: goodsPrice.value,
+          goodsTaste: goodsInfo.value,
+          goodsCount: count.value
+        },
+        Router
+      )
+      const result = await store.dispatch('goods/postGoodsInfo', {
+        url: '/shopBag',
+        data
+      })
+      if (result) unMountedShowGoodsDetail()
+      else Toast('网络异常!')
+    }
 
-    return { goodsTaste, count, goodsInfo, showGoodsInfo }
+    return {
+      DEFAULT_COLOR,
+      setColor,
+      goodsTaste,
+      count,
+      goodsInfo,
+      goodsPrice,
+      showGoodsInfo,
+      addShopBag
+    }
   }
 })
 </script>
@@ -113,6 +173,7 @@ export default defineComponent({
     overflow: hidden;
   }
   .detail-content {
+    z-index: 999999;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -154,7 +215,7 @@ export default defineComponent({
     margin-bottom: 170px;
   }
   .detail-footer {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;

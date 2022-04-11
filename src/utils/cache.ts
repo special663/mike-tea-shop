@@ -1,7 +1,4 @@
-enum Methods {
-  session,
-  local
-}
+import { Methods } from '@/types'
 class storage {
   //设置 默认本地存储
   setStorage(key: string, value: any, methods: Methods = Methods.local) {

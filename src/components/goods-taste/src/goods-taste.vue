@@ -2,9 +2,7 @@
   <div class="goods-taste" v-for="(item, title) in GoodsTasteInfo" :key="item">
     <div class="taste-options">
       <!-- title 展示参数类型的标题 -->
-      <div class="taste-title">
-        {{ $filter.filterTaste(title) }}
-      </div>
+      <div class="taste-title">{{ $filter.filterTaste(title) }}</div>
       <!-- item 展示商品的选项 -->
       <template v-if="title !== 'material'">
         <div class="item-options">
@@ -58,7 +56,12 @@
                 )
               "
             >
-              ￥1
+              {{
+                this.$filter.formartPrice({
+                  store: this.$store,
+                  listName: list.name
+                })
+              }}
               <div class="increment-btn">
                 <van-icon class="plus-o" name="plus" />
               </div>

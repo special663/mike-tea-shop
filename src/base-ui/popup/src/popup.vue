@@ -4,11 +4,13 @@
       @open="closePopup(false)"
       @close="closePopup(true)"
       v-model:show="isShow"
-      :position="popupConfig.position"
-      :round="popupConfig.round"
-      :style="popupConfig.style"
+      v-bind="popupConfig"
       class="popup"
     >
+      <!-- :position="popupConfig.position"
+      :round="popupConfig.round"
+      :style="popupConfig.style" -->
+      <slot name="header"></slot>
       <slot name="content"></slot>
     </van-popup>
   </div>
