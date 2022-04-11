@@ -1,4 +1,4 @@
-import { IGoodsInfo, Methods } from '@/types'
+import { IGoodsInfo } from '@/types'
 import Storage from '@/utils/cache'
 import { Toast } from 'vant'
 
