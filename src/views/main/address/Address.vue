@@ -1,5 +1,5 @@
 <template>
-  <NavBar
+  <SXNavBar
     class="address-nav-bar"
     :nav-bar-config="navBarConfig"
     @handleClickLeft="handleClickLeft"
@@ -26,11 +26,11 @@ import { useRouter } from 'vue-router'
 import { navBarConfig } from './config/nav-bar.config'
 import { overlayConfig } from './config/overlay.config'
 //compoments import
-import NavBar from '@/base-ui/nav-bar/src/nav-bar.vue'
+import SXNavBar from '@/base-ui/nav-bar/src/nav-bar.vue'
 import SXOverlay from '@/base-ui/overlay'
 
 export default defineComponent({
-  components: { NavBar, SXOverlay },
+  components: { SXNavBar, SXOverlay },
   setup() {
     const Router = useRouter()
     const handleClickLeft = () => {
