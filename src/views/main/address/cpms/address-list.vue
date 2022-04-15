@@ -1,15 +1,15 @@
 <template>
-  <div class="mine">
-    <MineContent />
+  <div class="address-list">
+    <AddressCell />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import MineContent from './cpms/mine-content.vue'
+import AddressCell from './address-cell.vue'
 
 export default defineComponent({
-  components: { MineContent },
+  components: { AddressCell },
   setup() {
     return {}
   }
@@ -17,8 +17,9 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.mine {
+.address-list {
+  height: 100%;
   width: 100%;
-  height: calc(100% - 50px);
+  overflow-y: scroll;
 }
 </style>

@@ -2,8 +2,10 @@ import {
   ActionBar,
   ActionBarButton,
   ActionBarIcon,
+  Area,
   Button,
   Card,
+  Cell,
   CellGroup,
   Col,
   Dialog,
@@ -15,7 +17,10 @@ import {
   NavBar,
   Overlay,
   Popup,
+  Progress,
   PullRefresh,
+  Radio,
+  RadioGroup,
   Row,
   Search,
   Sidebar,
@@ -71,7 +76,12 @@ const vants = [
   ActionBarButton,
   Card,
   Empty,
-  Stepper
+  Stepper,
+  Progress,
+  Radio,
+  RadioGroup,
+  Area,
+  Cell
 ]
 
 export default function registerVantsElement(app: App): void {

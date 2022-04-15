@@ -11,22 +11,51 @@
     >
       <van-cell-group inset>
         <template v-for="file in fieldConfig" :key="file.field">
+          <template v-if="file['other-slot']">
+            <slot :name="file['other-slot']" :scope="file"></slot>
+          </template>
+          <van-field v-else-if="file.type === 'radio'" :label="file.label">
+            <template #input>
+              <van-radio-group
+                :model-value="modelValue[`${file.field}`]"
+                @update:modelValue="handleValueChange($event, file.field)"
+                :direction="file.direction"
+                :checked-color="file['checked-color']"
+              >
+                <van-radio
+                  :name="select.name"
+                  v-for="select in file['radio-select']"
+                  :key="select.tip"
+                  >{{ select.tip }}</van-radio
+                >
+              </van-radio-group>
+            </template>
+          </van-field>
           <van-field
+            v-else
             :model-value="modelValue[`${file.field}`]"
             @update:modelValue="handleValueChange($event, file.field)"
             @focus="handlefieldFocus"
-            :name="file.name"
-            :label="file.label"
-            :type="file.type"
-            :maxlength="file.maxlength"
-            :clearable="file.clearable"
-            :placeholder="file.placeholder"
-            :rules="file.rules"
-          />
+            v-bind="file"
+          >
+            <template v-if="file['field-button']?.isShow" #button>
+              <van-button
+                @click="handleFieldButton(file)"
+                v-bind="file['field-button']"
+                >{{ file['field-button']?.message }}</van-button
+              >
+            </template>
+          </van-field>
         </template>
       </van-cell-group>
       <div style="margin: 16px" v-if="buttonConfig.isShow">
-        <van-button round block type="primary" native-type="submit">
+        <van-button
+          v-bind="buttonConfig"
+          round
+          block
+          type="primary"
+          native-type="submit"
+        >
           {{ buttonConfig.message }}
         </van-button>
       </div>
@@ -61,14 +90,6 @@ export default defineComponent({
       default: () => ({})
     }
   },
-  emits: [
-    'update:modelValue',
-    'onSubmit',
-    'handleValidate',
-    'handleFailed',
-    'handlefieldFocus',
-    'resetValidation'
-  ],
   setup(props, { emit }) {
     const formRef = ref()
     const raw = { ...props.modelValue }
@@ -100,16 +121,20 @@ export default defineComponent({
     const resetValidation = () => {
       formRef.value.resetValidation(keys)
     }
+    const handleFieldButton = (payload: any) => {
+      emit(`${payload.field}Button`)
+    }
     return {
       formRef,
       onSubmit,
       handleFailed,
       handleValueChange,
       handlefieldFocus,
-      resetValidation
+      resetValidation,
+      handleFieldButton
     }
   }
 })
 </script>
 
-<style scoped></style>
+<style lang="less" scoped></style>
