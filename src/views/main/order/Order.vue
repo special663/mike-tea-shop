@@ -1,4 +1,5 @@
 <template>
+  <SXNavBar class="address-nav-bar" :nav-bar-config="navBarConfig" />
   <Suspense class="order">
     <template #default>
       <AsyncOrderContent />
@@ -12,18 +13,23 @@
 </template>
 
 <script lang="ts">
+//vue import
 import { defineComponent, defineAsyncComponent, ref } from 'vue'
+//components import
 import SXOverlay from '@/base-ui/overlay'
+import SXNavBar from '@/base-ui/nav-bar'
+//config import
 import { overlayConfig } from './config/overlay.config'
+import { navBarConfig } from './config/nav-bar.config'
 const AsyncOrderContent = defineAsyncComponent(
   () => import('./cpms/order-content.vue')
 )
 
 export default defineComponent({
-  components: { SXOverlay, AsyncOrderContent },
+  components: { SXOverlay, SXNavBar, AsyncOrderContent },
   setup() {
     const show = ref(true)
-    return { overlayConfig, show }
+    return { overlayConfig, navBarConfig, show }
   }
 })
 </script>
