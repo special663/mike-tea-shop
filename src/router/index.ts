@@ -23,9 +23,9 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/main/goods/Goods.vue')
       },
       {
-        path: '/moments',
-        name: 'Moments',
-        component: () => import('@/views/main/moments/Moments.vue')
+        path: '/order',
+        name: 'Order',
+        component: () => import('@/views/main/order/Order.vue')
       },
       {
         path: '/mine',
@@ -36,6 +36,32 @@ const routes: RouteRecordRaw[] = [
         path: '/:id/detail',
         name: 'Detail',
         component: () => import('@/views/main/detail/Detail.vue')
+      },
+      {
+        path: '/address',
+        name: 'Address',
+        component: () => import('@/views/main/address/Address.vue'),
+        redirect: 'addressList',
+        children: [
+          {
+            path: '/addressList',
+            name: 'AddressList',
+            component: () =>
+              import('@/views/main/address/cpms/address-main.vue')
+          },
+          {
+            path: '/edit',
+            name: 'Edit',
+            component: () =>
+              import('@/views/main/address/cpms/address-edit.vue')
+          },
+          {
+            path: '/:id/edit',
+            name: 'ModifyEdit',
+            component: () =>
+              import('@/views/main/address/cpms/address-edit.vue')
+          }
+        ]
       }
     ]
   }

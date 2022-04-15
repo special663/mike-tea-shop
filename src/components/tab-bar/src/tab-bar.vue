@@ -1,6 +1,6 @@
 <template>
   <div class="tab-bar">
-    <van-tabbar v-model="active" v-bind="tabBar" z-index="99999">
+    <van-tabbar v-model="active" :fixed="true" v-bind="tabBar" z-index="99999">
       <van-tabbar-item
         v-for="item in tabBarItem"
         :key="item.name"
@@ -33,4 +33,9 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.tab-bar {
+  margin: 0;
+  padding: 0;
+}
+</style>

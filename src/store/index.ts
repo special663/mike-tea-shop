@@ -5,6 +5,7 @@ import login from './entrance/login/login'
 import register from './entrance/register/register'
 import goods from './main/goods/goods'
 import home from './main/home/home'
+import mine from './main/mine/mine'
 
 const store = createStore<IRootState>({
   state() {
@@ -19,7 +20,8 @@ const store = createStore<IRootState>({
     register,
     //main
     goods,
-    home
+    home,
+    mine
   }
 })
 

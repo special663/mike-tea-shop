@@ -16,11 +16,11 @@ export const tabBarItemConfig: ITabBarItem[] = [
     message: '点餐'
   },
   {
-    name: 'moments',
-    icon: 'friends-o',
-    to: '/moments',
+    name: 'order',
+    icon: 'orders-o',
+    to: '/order',
     replace: true,
-    message: '动态'
+    message: '订单'
   },
   {
     name: 'mine',

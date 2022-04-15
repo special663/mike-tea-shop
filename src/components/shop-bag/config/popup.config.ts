@@ -5,7 +5,7 @@ export const popupConfig: IPopupConfig = {
   style: {
     height: 'auto',
     width: '100%',
-    bottom: '50px',
+    bottom: '47px',
     'min-height': '125px',
     'max-height': '500px'
   },

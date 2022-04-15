@@ -2,6 +2,7 @@
   <div class="system">
     <router-view />
     <TabBar
+      class="tab-bar"
       v-if="isShowTabBar"
       :tabBar="tabBarConfig"
       :tabBarItem="tabBarItemConfig"

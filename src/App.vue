@@ -23,4 +23,10 @@
   border: 2px solid rgba(29, 136, 92) !important;
   color: rgba(29, 136, 92) !important;
 }
+.van-tabbar--fixed {
+  bottom: -3px !important;
+}
+.van-progress__pivot {
+  display: none;
+}
 </style>
