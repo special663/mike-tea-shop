@@ -4,7 +4,7 @@
       class="address-edit-form"
       v-bind="formConfig"
       v-model="baseInfo"
-      @onSubmit="submitHandle(baseInfo, Store, Router)"
+      @onSubmit="submitHandle(baseInfo, Store, Router, paramsId)"
       @telePhoneButton="telePhoneHandle(Store, baseInfo)"
     >
       <template #address="{ scope }">

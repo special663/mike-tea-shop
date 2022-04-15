@@ -1,16 +1,35 @@
 <template>
-  <div class="goods">
-    <GoodsContent />
-  </div>
+  <Suspense class="goods">
+    <template #default>
+      <keep-alive>
+        <component :is="AsyncName"></component>
+      </keep-alive>
+    </template>
+    <template #fallback>
+      <SXOverlay :overlay-config="overlayConfig" :show="show">
+        <template #content><van-loading /></template>
+      </SXOverlay>
+    </template>
+  </Suspense>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import GoodsContent from './cpms/goods-content.vue'
+import { defineComponent, ref, defineAsyncComponent } from 'vue'
+import SXOverlay from '@/base-ui/overlay'
+import { overlayConfig } from './config/overlay.config'
+const AsyncGoodsContent = defineAsyncComponent(
+  () => import('./cpms/goods-content.vue')
+)
+
 export default defineComponent({
-  components: { GoodsContent },
+  components: {
+    AsyncGoodsContent,
+    SXOverlay
+  },
   setup() {
-    return {}
+    const show = ref(true)
+    const AsyncName = ref('AsyncGoodsContent')
+    return { overlayConfig, show, AsyncName }
   }
 })
 </script>

@@ -2,7 +2,7 @@ import Storage from '@/utils/cache'
 import { Toast } from 'vant'
 const uid = Storage.getStorage('uid')
 
-export default function deleteHandle(
+export default async function deleteHandle(
   Store: any,
   Router: any,
   id: number | string
@@ -11,5 +11,23 @@ export default function deleteHandle(
     Toast('操作失败')
     return false
   }
-  console.log('蒸饭机器人')
+  const result = await Store.dispatch('mine/deleteAddressList', {
+    url: '/detail',
+    type: 'list',
+    entity: { id, uid },
+    redirect: {
+      url: '/list',
+      params: uid,
+      type: 'list'
+    }
+  })
+  if (!result) {
+    Toast('操作失败')
+    return false
+  } else {
+    Toast('删除成功')
+    Router.replace('/addressList')
+    Router.back()
+    return true
+  }
 }

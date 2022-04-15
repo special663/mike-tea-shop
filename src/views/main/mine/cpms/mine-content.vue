@@ -29,7 +29,7 @@ export default defineComponent({
   font-size: 15px;
   position: relative;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 46px);
   background-color: rgba(81, 182, 116);
   background-image: url('~@/assets/img/jpg/mine.jpg');
 

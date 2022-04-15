@@ -37,7 +37,7 @@ export default defineComponent({
   left: 0;
   right: 0;
   z-index: 99999 !important;
-  bottom: 50px;
+  bottom: 46px;
   height: 2.5em;
   width: 100%;
   background: #fff;

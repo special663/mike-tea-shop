@@ -15,9 +15,16 @@ export function postAddressService(url: string, payload?: any) {
   })
 }
 
-// export function deleteAddressService(url: string, payload?: any) {
-//   return SXRequest.delete<IDataType<any>>({
-//     url: `/address${url}`,
-//     data: payload
-//   })
-// }
+export function deleteAddressService(url: string, payload?: any) {
+  return SXRequest.delete<IDataType<any>>({
+    url: `/address${url}`,
+    data: payload
+  })
+}
+
+export function patchAddressService(url: string, payload?: any) {
+  return SXRequest.patch<IDataType<any>>({
+    url: `/address${url}`,
+    data: payload
+  })
+}

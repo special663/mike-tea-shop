@@ -5,7 +5,7 @@ export const popupConfig: IPopupConfig = {
   style: {
     height: '80%',
     width: '100%',
-    bottom: '50px'
+    bottom: '47px'
   },
   round: true
 }

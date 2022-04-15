@@ -1,9 +1,7 @@
 <template>
-  <Suspense class="mine">
+  <Suspense class="order">
     <template #default>
-      <keep-alive>
-        <component :is="AsyncName"></component>
-      </keep-alive>
+      <AsyncOrderContent />
     </template>
     <template #fallback>
       <SXOverlay :overlay-config="overlayConfig" :show="show">
@@ -17,23 +15,17 @@
 import { defineComponent, defineAsyncComponent, ref } from 'vue'
 import SXOverlay from '@/base-ui/overlay'
 import { overlayConfig } from './config/overlay.config'
-const AsyncMineContent = defineAsyncComponent(
-  () => import('./cpms/mine-content.vue')
+const AsyncOrderContent = defineAsyncComponent(
+  () => import('./cpms/order-content.vue')
 )
 
 export default defineComponent({
-  components: { AsyncMineContent, SXOverlay },
+  components: { SXOverlay, AsyncOrderContent },
   setup() {
     const show = ref(true)
-    const AsyncName = ref('AsyncMineContent')
-    return { overlayConfig, show, AsyncName }
+    return { overlayConfig, show }
   }
 })
 </script>
 
-<style lang="less" scoped>
-.mine {
-  width: 100%;
-  height: 100%;
-}
-</style>
+<style scoped></style>

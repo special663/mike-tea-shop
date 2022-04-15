@@ -22,7 +22,8 @@ interface IBaseInfo {
 export default async function submitHandle(
   baseInfo: IBaseInfo,
   Store: any,
-  Router: any
+  Router: any,
+  paramsId: any
 ) {
   const user_id = Storage.getStorage('uid')
   const keys = Object.keys(baseInfo)
@@ -32,21 +33,37 @@ export default async function submitHandle(
       return
     }
   }
+  console.log(paramsId)
   //转换类型
   baseInfo.gender = transitionGender('name', baseInfo.gender)
   baseInfo.label = transitionLabel('index', baseInfo.label)
   //发送网络请求
-  const result = await Store.dispatch('mine/postAddressList', {
+  const method = paramsId ? 'patch' : 'post'
+  const payload: any = {
     url: '/addition',
     type: 'list',
     entity: {
       ...baseInfo,
       user_id
     }
-  })
+  }
+  if (paramsId) {
+    payload.redirect = {
+      url: '/list',
+      params: user_id,
+      type: 'list'
+    }
+    payload.url = '/detail'
+    payload.entity.id = paramsId
+  }
+  console.log(`mine/${method}AddressList`)
+  const result = await Store.dispatch(`mine/${method}AddressList`, payload)
   //返回结果进行判断
   if (!result) Toast('操作失败')
-  else Router.back()
+  else {
+    Toast('操作成功')
+    Router.back()
+  }
 }
 
 function emitSubmit(description: typeDescription) {

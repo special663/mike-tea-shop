@@ -1,8 +1,19 @@
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
-import { IMineState, IServiceMethodByGet, IServiceMethodByPost } from './types'
+import {
+  IMineState,
+  IServiceMethodByDelete,
+  IServiceMethodByGet,
+  IServiceMethodByPost,
+  IServiceMethodByPatch
+} from './types'
 import { formatParams, emitMine } from './hooks'
-import { getAddressService, postAddressService } from '@/service/mine/address'
+import {
+  deleteAddressService,
+  getAddressService,
+  patchAddressService,
+  postAddressService
+} from '@/service/mine/address'
 
 const mine: Module<IMineState, IRootState> = {
   namespaced: true,
@@ -50,6 +61,28 @@ const mine: Module<IMineState, IRootState> = {
       return emitMine(
         { code: data.code, mutations: type, result: data[type] },
         { commit }
+      )
+    },
+    //Mission 1、删除地址信息
+    async deleteAddressList({ dispatch }, payload: IServiceMethodByDelete) {
+      const { url, params, type, entity, redirect } = payload
+      let effect = url
+      if (params) effect = formatParams(url, params)
+      const { data } = await deleteAddressService(effect, entity)
+      return emitMine(
+        { code: data.code, mutations: type, result: redirect },
+        { dispatch }
+      )
+    },
+    //Mission 2、修改地址信息
+    async patchAddressList({ dispatch }, payload: IServiceMethodByPatch) {
+      const { url, params, type, entity, redirect } = payload
+      let effect = url
+      if (params) effect = formatParams(url, params)
+      const { data } = await patchAddressService(effect, entity)
+      return emitMine(
+        { code: data.code, mutations: type, result: redirect },
+        { dispatch }
       )
     }
   }
