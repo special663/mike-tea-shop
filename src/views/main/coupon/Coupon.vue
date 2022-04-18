@@ -1,8 +1,12 @@
 <template>
-  <SXNavBar class="address-nav-bar" :nav-bar-config="navBarConfig" />
-  <Suspense class="order">
+  <SXNavBar
+    class="coupon-nav-bar"
+    @handleClickLeft="this.$router.back()"
+    :nav-bar-config="navBarConfig"
+  />
+  <Suspense class="coupon">
     <template #default>
-      <AsyncOrderContent />
+      <AsyncCouponContent />
     </template>
     <template #fallback>
       <SXOverlay :overlay-config="overlayConfig" :show="show">
@@ -21,12 +25,12 @@ import SXNavBar from '@/base-ui/nav-bar'
 //config import
 import { overlayConfig } from './config/overlay.config'
 import { navBarConfig } from './config/nav-bar.config'
-const AsyncOrderContent = defineAsyncComponent(
-  () => import('./cpms/order-content.vue')
+const AsyncCouponContent = defineAsyncComponent(
+  () => import('./cpms/coupon-content.vue')
 )
 
 export default defineComponent({
-  components: { SXOverlay, SXNavBar, AsyncOrderContent },
+  components: { SXOverlay, SXNavBar, AsyncCouponContent },
   setup() {
     const show = ref(true)
     return { overlayConfig, navBarConfig, show }
@@ -34,4 +38,12 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.coupon-nav-bar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+}
+</style>

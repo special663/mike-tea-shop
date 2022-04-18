@@ -27,6 +27,6 @@ export default defineComponent({
 
 <style scoped lang="less">
 .content {
-  background-color: rgba(228, 1, 19);
+  background-color: rgba(81, 182, 116);
 }
 </style>
