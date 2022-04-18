@@ -29,4 +29,7 @@
 .van-progress__pivot {
   display: none;
 }
+.van-tabs__line {
+  background-color: rgba(0, 122, 83) !important;
+}
 </style>

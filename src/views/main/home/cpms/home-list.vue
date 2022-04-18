@@ -23,7 +23,7 @@ export default defineComponent({
 .home-list {
   width: 90%;
   height: 120px;
-  background-color: rgba(228, 1, 19);
+  background-color: rgba(81, 182, 116);
   margin: auto;
   margin-top: 15px;
   padding-bottom: 15px;

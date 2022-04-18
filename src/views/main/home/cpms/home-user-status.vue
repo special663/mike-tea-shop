@@ -54,7 +54,7 @@ export default defineComponent({
 
 <style scoped lang="less">
 .goods-user-status {
-  background-color: rgba(228, 1, 19);
+  background-color: rgba(81, 182, 116);
   display: flex;
   align-content: center;
   justify-content: center;

@@ -2,6 +2,9 @@
   <div class="goods-content">
     <GoodsNavBar />
     <div class="main">
+      <div class="main-swip">
+        <img class="swipe-img" src="~@/assets/img/jpeg/integral-shop.jpeg" />
+      </div>
       <img src="~@/assets/img/png/user_info_perfect.png" />
       <div class="main-content">
         <van-sticky offset-top="46" z-index="1">
@@ -95,6 +98,19 @@ export default defineComponent({
     margin-top: 46px;
     display: flex;
     flex-direction: column;
+    .main-swip {
+      box-sizing: border-box;
+      width: 100%;
+      height: 100px;
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      .swipe-img {
+        border-radius: 0.4em;
+        height: 100%;
+        width: 98%;
+      }
+    }
     img {
       height: 100%;
       width: 100%;

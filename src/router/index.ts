@@ -62,6 +62,11 @@ const routes: RouteRecordRaw[] = [
               import('@/views/main/address/cpms/address-edit.vue')
           }
         ]
+      },
+      {
+        path: '/coupon',
+        name: 'Coupon',
+        component: () => import('@/views/main/coupon/Coupon.vue')
       }
     ]
   }

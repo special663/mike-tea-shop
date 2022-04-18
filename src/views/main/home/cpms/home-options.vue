@@ -70,7 +70,7 @@ export default defineComponent({
       border-radius: 10px;
       width: 10px;
       height: 10px;
-      background-color: rgba(228, 1, 19);
+      background-color: rgba(81, 182, 116);
     }
     .middle {
       height: calc(100% - 7px);

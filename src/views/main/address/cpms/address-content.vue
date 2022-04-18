@@ -2,7 +2,11 @@
   <div class="address-content">
     <!-- 无内容展示界面 -->
     <template v-if="!isHadList">
-      <SXEmpty class="address-empty" :empty-config="emptyConfig" />
+      <SXEmpty
+        v-if="delayTime"
+        class="address-empty"
+        :empty-config="emptyConfig"
+      />
     </template>
     <template v-else>
       <AddressList />
@@ -12,7 +16,7 @@
 
 <script lang="ts">
 //vue import
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 //componets import
 import SXEmpty from '@/base-ui/empty'
 import AddressList from './address-list.vue'
@@ -27,7 +31,11 @@ export default defineComponent({
     const isHadList = computed(
       () => Store.getters['mine/getAddressInfo']('List').length
     )
-    return { emptyConfig, isHadList }
+    const delayTime = ref(false)
+    setTimeout(() => {
+      delayTime.value = true
+    }, 200)
+    return { emptyConfig, isHadList, delayTime }
   }
 })
 </script>
