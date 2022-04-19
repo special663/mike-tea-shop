@@ -1,6 +1,10 @@
 <template>
   <div class="goods-nav-bar">
-    <SXNavBar :navBarConfig="navBarConfig" class="sx-nav-bar">
+    <SXNavBar
+      :navBarConfig="navBarConfig"
+      @handleClickLeft="$router.push('/address')"
+      class="sx-nav-bar"
+    >
       <template class="left-slot" #leftSlot
         ><van-icon name="location" size="20" />
         <p class="location-p">天福花园asdasdadadaa</p>
@@ -31,7 +35,6 @@ export default defineComponent({
     const onSearch = () => {
       console.log('搜索')
     }
-
     return { navBarConfig, value, onSearch }
   }
 })
