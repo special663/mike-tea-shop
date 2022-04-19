@@ -69,7 +69,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/main/coupon/Coupon.vue')
       },
       {
-        path: 'settle',
+        path: '/settle',
         name: 'Settle',
         component: () => import('@/views/main/settle/Settle.vue')
       }
