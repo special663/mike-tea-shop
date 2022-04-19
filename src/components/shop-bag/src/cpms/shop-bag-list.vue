@@ -3,7 +3,10 @@
     <!-- 这是头部 -->
     <div class="list-header">
       <!-- 全选 -->
-      <div class="check-all" @click="checkAll">
+      <div
+        class="check-all"
+        @click="checkAll(goodsShopBag, !isCheckAll, $store)"
+      >
         <div
           ref="selectAllRef"
           :class="['select-all', isCheckAll ? 'select-all-active' : 0]"
@@ -31,7 +34,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import clearAll from '../../hooks/clear-all-dialog'
+import { clearAll, checkAll } from '../../hooks'
 import ShopBagItem from '@/components/shop-bag-item'
 import { useStore } from '@/store'
 
@@ -47,10 +50,7 @@ export default defineComponent({
     })
     //全选的DOM-REF
     const selectAllRef: any = ref(null)
-    const checkAll = () => {
-      console.log('aaa')
-    }
-    return { clearAll, goodsShopBag, isCheckAll, selectAllRef, checkAll }
+    return { clearAll, checkAll, goodsShopBag, isCheckAll, selectAllRef }
   }
 })
 </script>
