@@ -9,7 +9,7 @@
       />
       <div class="content-price">{{ $filter.formartPrice(goodsPrice) }}</div>
     </div>
-    <div class="content-right" @click="toSettleAccounts">去结算</div>
+    <div class="content-right" @click="$router.push('/settle')">去结算</div>
   </div>
 </template>
 
@@ -42,10 +42,7 @@ export default defineComponent({
     const showGoodsInfo = () => {
       emit('isShowGoodsInfo', !isShowGoodsList.value)
     }
-    const toSettleAccounts = () => {
-      console.log('去结算，但是没完成')
-    }
-    return { goodsCount, goodsPrice, showGoodsInfo, toSettleAccounts }
+    return { goodsCount, goodsPrice, showGoodsInfo }
   }
 })
 </script>
