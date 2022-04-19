@@ -67,6 +67,11 @@ const routes: RouteRecordRaw[] = [
         path: '/coupon',
         name: 'Coupon',
         component: () => import('@/views/main/coupon/Coupon.vue')
+      },
+      {
+        path: 'settle',
+        name: 'Settle',
+        component: () => import('@/views/main/settle/Settle.vue')
       }
     ]
   }
